@@ -22,6 +22,7 @@ import { Button } from "@/components/button";
 import { Skeleton } from "@/components/skeleton";
 import {
   getAllChatDates,
+  getAllJournalDataLogs,
   getBookmarks,
   getCalendarEvents,
   getChatHistory,
@@ -31,10 +32,12 @@ import {
   saveMetricsInsightsCache,
   type CalendarEventData,
   type ChatHistory,
+  type JournalDataLog,
   type MetricsInsightsCache,
   type MetricsSourceStats,
   type TodoItemData,
 } from "@/lib/firebase-service";
+import { deduplicateJournalPoints } from "@/lib/chat-utils";
 import { formatDistanceToNow } from "date-fns";
 import {
   Bar,
@@ -314,7 +317,8 @@ const makeFingerprint = (
   chatHistory: ChatHistory[],
   calendarEvents: CalendarEventData[],
   todoItems: TodoItemData[],
-  totalMessages: number
+  totalMessages: number,
+  journalLogs: JournalDataLog[] = []
 ) => {
   const compact = {
     totalMessages,
@@ -324,6 +328,11 @@ const makeFingerprint = (
       lastTimestamp: chat.lastTimestamp,
       journalCount: chat.journal?.length || 0,
       journalTail: chat.journal?.slice(-3) || [],
+    })),
+    journalLogs: journalLogs.map((log) => ({
+      date: log.date,
+      pointsCount: log.points?.length || 0,
+      pointsTail: log.points?.slice(-3) || [],
     })),
     calendarEvents: calendarEvents.map((event) => ({
       id: event.id,
@@ -356,10 +365,19 @@ const getLatestActivityAt = (
   return Math.max(0, ...values) || undefined;
 };
 
-const buildJournalEntries = (chatHistory: ChatHistory[], calendarEvents: CalendarEventData[], todoItems: TodoItemData[]) => {
-  const journalLines = chatHistory.flatMap((chat) =>
+const buildJournalEntries = (
+  chatHistory: ChatHistory[],
+  calendarEvents: CalendarEventData[],
+  todoItems: TodoItemData[],
+  journalLogs: JournalDataLog[] = []
+) => {
+  const historyPoints = chatHistory.flatMap((chat) =>
     (chat.journal || []).map((point) => `${chat.date}: ${point.replace(/^\d+[\.)]\s*/, "").trim()}`)
   );
+  const logPoints = journalLogs.flatMap((log) =>
+    (log.points || []).map((point) => `${log.date}: ${point.replace(/^\d+[\.)]\s*/, "").trim()}`)
+  );
+  const journalLines = deduplicateJournalPoints([...historyPoints, ...logPoints]);
   const eventLines = calendarEvents.map((event) => `Calendar ${event.start}: ${event.title}${event.description ? ` - ${event.description}` : ""}`);
   const todoLines = todoItems.map((todo) => `Todo ${todo.completed ? "completed" : "pending"}${todo.dueDate ? ` due ${todo.dueDate}` : ""}: ${todo.title}`);
   return [...journalLines, ...eventLines, ...todoLines].slice(-160).join("\n");
@@ -622,12 +640,13 @@ export default function MetricsPage({ params }: PageProps) {
       setIsLoadingMetrics(true);
       setGenerationError(null);
       try {
-        const [chatHistory, bookmarks, chatDates, calendarEvents, todoItems, savedCache] = await Promise.all([
+        const [chatHistory, bookmarks, chatDates, calendarEvents, todoItems, journalLogs, savedCache] = await Promise.all([
           getChatHistory(userIdentifier).catch(() => []),
           getBookmarks(userIdentifier).catch(() => []),
           getAllChatDates(userIdentifier).catch(() => []),
           getCalendarEvents(userIdentifier).catch(() => []),
           getTodoItems(userIdentifier).catch(() => []),
+          getAllJournalDataLogs(userIdentifier).catch(() => []),
           getMetricsInsightsCache(userIdentifier).catch(() => null),
         ]);
 
@@ -673,7 +692,11 @@ export default function MetricsPage({ params }: PageProps) {
 
         recentActivity.sort((a, b) => b.time.getTime() - a.time.getTime());
 
-        const totalJournalHighlights = chatHistory.reduce((sum, chat) => sum + (chat.journal?.length || 0), 0);
+        const allHighlightPoints = deduplicateJournalPoints([
+          ...chatHistory.flatMap(c => c.journal || []),
+          ...journalLogs.flatMap(l => l.points || [])
+        ]);
+        const totalJournalHighlights = allHighlightPoints.length;
         const latestActivityAt = getLatestActivityAt(chatHistory, calendarEvents, todoItems);
         const stats: MetricsSourceStats = {
           totalChats: chatHistory.length,
@@ -686,8 +709,8 @@ export default function MetricsPage({ params }: PageProps) {
           totalEvents: calendarEvents.length,
           latestActivityAt,
         };
-        const fingerprint = makeFingerprint(chatHistory, calendarEvents, todoItems, totalMessages);
-        const journalEntries = buildJournalEntries(chatHistory, calendarEvents, todoItems);
+        const fingerprint = makeFingerprint(chatHistory, calendarEvents, todoItems, totalMessages, journalLogs);
+        const journalEntries = buildJournalEntries(chatHistory, calendarEvents, todoItems, journalLogs);
 
         setMetrics({
           ...stats,
