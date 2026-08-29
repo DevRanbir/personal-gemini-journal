@@ -93,3 +93,25 @@ export const getFirebaseStatus = (): { isConfigured: boolean; message: string } 
     };
   }
 };
+
+export function summarizeUserPromptToHighlight(text: string): string {
+  if (!text) return '';
+  let clean = text.split(/\[(USER|Attached|Data|Referenced|New Question)/i)[0].trim();
+  
+  // Strip conversational fillers, corrections, & greetings at the start
+  clean = clean.replace(/^(ye|yeh)\s+(galat|wrong)\s+hai,?\s*/i, '');
+  clean = clean.replace(/^(aaj|ajj|aj|today|bhai|boss|yrr|yar|dost|bro),?\s*/i, '');
+  clean = clean.replace(/^(pta\skya\shua|guess\swhat\shappened|guess\swhat|you\sknow\swhat),?\s*/i, '');
+  clean = clean.replace(/^(actually\s+i|actually),?\s*/i, '');
+  clean = clean.replace(/^(can\s+you\s+)?(record|save|log|note)\s+(that|this)\s+(for\s+me)?[\.\?\!]*/i, '');
+  clean = clean.replace(/[\.\,\?\!\s]+(can\s+you\s+)?(record|save|log|note)\s+(that|this)\s+(for\s+me)?[\.\?\!]*/i, '');
+  clean = clean.replace(/^its?\s+on\s+/i, 'Birthday is on ');
+  
+  // Clean trailing punctuation
+  clean = clean.replace(/[\.,\s]+$/, '');
+
+  if (!clean) clean = text;
+
+  // Capitalize first character
+  return clean.charAt(0).toUpperCase() + clean.slice(1);
+}

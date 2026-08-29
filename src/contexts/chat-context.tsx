@@ -26,7 +26,7 @@ import {
   updateCalendarEvent,
   ChatMessage as FirebaseChatMessage 
 } from '@/lib/firebase-service';
-import { initializeUserChat } from '@/lib/chat-utils';
+import { initializeUserChat, summarizeUserPromptToHighlight } from '@/lib/chat-utils';
 import { groqService } from '@/lib/gemini-service';
 import { getSlashPreset, parseSlashPresets, type SlashPresetId } from '@/lib/chat-presets';
 import { showHarmonyToast } from '@/components/progress-toast';
@@ -953,28 +953,37 @@ export function ChatProvider({ children, onHistoryUpdate }: {
         }
 
         // Process any returned dataLog actions or userdata reflections
-        if (aiResult.userdata && aiResult.userdata.length > 0) {
-          try {
-            const existingLog = await getJournalDataLog(chatOwnerId, currentDate);
-            const currentPoints = existingLog?.points || [];
-            const updatedPoints = Array.from(new Set([...currentPoints, ...aiResult.userdata]));
-            await saveJournalDataLog(chatOwnerId, currentDate, updatedPoints);
-            await appendJournalPointsToHistory(chatOwnerId, currentDate, aiResult.userdata);
-          } catch (err) {
-            console.error('Failed to save userdata reflections:', err);
+        let pointsToSave: string[] = [];
+        if (aiResult.userdata && Array.isArray(aiResult.userdata)) {
+          pointsToSave.push(...aiResult.userdata);
+        }
+        if (aiResult.action?.dataLog?.addPoints && Array.isArray(aiResult.action.dataLog.addPoints)) {
+          pointsToSave.push(...aiResult.action.dataLog.addPoints);
+        }
+
+        // Fallback: If AI response didn't yield userdata JSON, but user shared a milestone/score or asked to record/log:
+        if (pointsToSave.length === 0 && cleanContent) {
+          const isRecordingRequest = /\b(record|save|log|note)\b/i.test(cleanContent);
+          const hasPersonalFact = /\b(\d+%|\d+\/\d+|math|exam|test|scored?|got|passed|won|bought|chori|birthday|job|project)\b/i.test(cleanContent);
+          if (isRecordingRequest || hasPersonalFact) {
+            const summary = summarizeUserPromptToHighlight(cleanContent);
+            if (summary && summary.length >= 4 && !summary.endsWith('?')) {
+              pointsToSave.push(summary);
+            }
           }
         }
 
-        if (aiResult.action?.dataLog?.addPoints && aiResult.action.dataLog.addPoints.length > 0) {
+        pointsToSave = Array.from(new Set(pointsToSave.filter(p => typeof p === 'string' && p.trim())));
+
+        if (pointsToSave.length > 0) {
           try {
             const existingLog = await getJournalDataLog(chatOwnerId, currentDate);
             const currentPoints = existingLog?.points || [];
-            const updatedPoints = Array.from(new Set([...currentPoints, ...aiResult.action.dataLog.addPoints]));
+            const updatedPoints = Array.from(new Set([...currentPoints, ...pointsToSave]));
             await saveJournalDataLog(chatOwnerId, currentDate, updatedPoints);
-            await appendJournalPointsToHistory(chatOwnerId, currentDate, aiResult.action.dataLog.addPoints);
-            // No toast here — dataLog is silently saved on every reply as a background journal entry
+            await appendJournalPointsToHistory(chatOwnerId, currentDate, pointsToSave);
           } catch (err) {
-            console.error('Failed to add dataLog points:', err);
+            console.error('Failed to save journal data log points:', err);
           }
         }
 

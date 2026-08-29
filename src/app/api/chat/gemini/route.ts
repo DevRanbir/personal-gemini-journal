@@ -64,6 +64,10 @@ function parseStructuredAiResponse(rawText: string, userMessage?: string) {
     }
     userdataPoints = Array.isArray(parsed.userdata) ? parsed.userdata : [];
     actionObj = parsed.action || null;
+
+    if (actionObj && actionObj.dataLog && Array.isArray(actionObj.dataLog.addPoints)) {
+      userdataPoints = Array.from(new Set([...userdataPoints, ...actionObj.dataLog.addPoints]));
+    }
   }
 
   // Filter junk from userdata
@@ -79,6 +83,19 @@ function parseStructuredAiResponse(rawText: string, userMessage?: string) {
       return true;
     })
     .map((pt: string) => summarizeUserPromptToHighlight(pt));
+
+  // Fallback: If AI response didn't yield userdata JSON, but user shared a milestone/score or asked to record/log:
+  if (userdataPoints.length === 0 && userMessage) {
+    const isRecordingRequest = /\b(record|save|log|note)\b/i.test(userMessage);
+    const hasPersonalFact = /\b(\d+%|\d+\/\d+|math|exam|test|scored?|got|passed|won|bought|chori|birthday|job|project)\b/i.test(userMessage);
+    
+    if (isRecordingRequest || hasPersonalFact) {
+      const summary = summarizeUserPromptToHighlight(userMessage);
+      if (summary && summary.length >= 4 && !summary.endsWith('?')) {
+        userdataPoints.push(summary);
+      }
+    }
+  }
 
   return {
     response: responseText,
