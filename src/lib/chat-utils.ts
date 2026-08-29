@@ -115,3 +115,51 @@ export function summarizeUserPromptToHighlight(text: string): string {
   // Capitalize first character
   return clean.charAt(0).toUpperCase() + clean.slice(1);
 }
+
+export function deduplicateJournalPoints(points: string[]): string[] {
+  const result: string[] = [];
+
+  for (const rawPt of points) {
+    if (!rawPt || typeof rawPt !== 'string') continue;
+    const cleanPt = rawPt.replace(/^\d+[\.\)]\s*/, '').trim();
+    if (cleanPt.length < 4) continue;
+
+    const lower = cleanPt.toLowerCase();
+    const numbers = lower.match(/\b\d+(%|\b)/g) || [];
+    const keywords = lower.match(/\b[a-z]{4,}\b/g) || [];
+
+    let isDuplicate = false;
+    for (const existing of result) {
+      const existingLower = existing.toLowerCase();
+      const existingNumbers = existingLower.match(/\b\d+(%|\b)/g) || [];
+      const existingKeywords = existingLower.match(/\b[a-z]{4,}\b/g) || [];
+
+      // 1. Exact or substring match
+      if (existingLower === lower || existingLower.includes(lower) || lower.includes(existingLower)) {
+        isDuplicate = true;
+        break;
+      }
+
+      // 2. If same numbers exist (e.g. both have "69") and share topic keywords (e.g. "science" or "test")
+      const sameNumbers = numbers.length > 0 && numbers.every(n => existingNumbers.includes(n));
+      const sharedWordCount = keywords.filter(w => existingKeywords.includes(w)).length;
+
+      if (sameNumbers && sharedWordCount >= 1) {
+        isDuplicate = true;
+        break;
+      }
+
+      // 3. High keyword overlap (3+ matching words)
+      if (sharedWordCount >= 3) {
+        isDuplicate = true;
+        break;
+      }
+    }
+
+    if (!isDuplicate) {
+      result.push(cleanPt);
+    }
+  }
+
+  return result;
+}

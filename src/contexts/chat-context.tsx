@@ -26,7 +26,7 @@ import {
   updateCalendarEvent,
   ChatMessage as FirebaseChatMessage 
 } from '@/lib/firebase-service';
-import { initializeUserChat, summarizeUserPromptToHighlight } from '@/lib/chat-utils';
+import { initializeUserChat, summarizeUserPromptToHighlight, deduplicateJournalPoints } from '@/lib/chat-utils';
 import { groqService } from '@/lib/gemini-service';
 import { getSlashPreset, parseSlashPresets, type SlashPresetId } from '@/lib/chat-presets';
 import { showHarmonyToast } from '@/components/progress-toast';
@@ -973,15 +973,14 @@ export function ChatProvider({ children, onHistoryUpdate }: {
           }
         }
 
-        pointsToSave = Array.from(new Set(pointsToSave.filter(p => typeof p === 'string' && p.trim())));
+        pointsToSave = deduplicateJournalPoints(pointsToSave);
 
         if (pointsToSave.length > 0) {
           try {
             const existingLog = await getJournalDataLog(chatOwnerId, currentDate);
             const currentPoints = existingLog?.points || [];
-            const updatedPoints = Array.from(new Set([...currentPoints, ...pointsToSave]));
+            const updatedPoints = deduplicateJournalPoints([...currentPoints, ...pointsToSave]);
             await saveJournalDataLog(chatOwnerId, currentDate, updatedPoints);
-            await appendJournalPointsToHistory(chatOwnerId, currentDate, pointsToSave);
           } catch (err) {
             console.error('Failed to save journal data log points:', err);
           }

@@ -916,6 +916,7 @@ export const deleteJournalPointFromHistory = async (
       return false;
     }
 
+    // 1. Delete from chat_history document
     const docRef = doc(db, "users", targetUserId, "chat_history", date);
     const docSnap = await getDoc(docRef);
 
@@ -927,12 +928,24 @@ export const deleteJournalPointFromHistory = async (
         journal: updatedJournal,
         updatedAt: Date.now(),
       }, { merge: true });
-
-      return true;
     }
-    return false;
+
+    // 2. Delete from journal_logs document
+    const logDocRef = doc(db, "users", targetUserId, "journal_logs", date);
+    const logDocSnap = await getDoc(logDocRef);
+    if (logDocSnap.exists() && Array.isArray(logDocSnap.data().points)) {
+      const existingPoints: string[] = logDocSnap.data().points;
+      const updatedPoints = existingPoints.filter((_, idx) => idx !== pointIndexToDelete);
+
+      await setDoc(logDocRef, {
+        points: updatedPoints,
+        updatedAt: Date.now(),
+      }, { merge: true });
+    }
+
+    return true;
   } catch (error) {
-    console.error('Error deleting journal point from chat_history:', error);
+    console.error('Error deleting journal point:', error);
     return false;
   }
 };

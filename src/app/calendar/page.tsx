@@ -41,6 +41,7 @@ import {
   type CalendarEventData 
 } from "@/lib/firebase-service";
 import { NotebookPen, BookOpen } from "lucide-react";
+import { deduplicateJournalPoints } from "@/lib/chat-utils";
 import { showHarmonyToast } from "@/components/progress-toast";
 import {
   AlertDialog,
@@ -157,7 +158,7 @@ export default function CalendarPage() {
       currentHistoryItems.forEach(item => {
         map[item.date] = {
           title: item.title,
-          points: item.journal || [],
+          points: deduplicateJournalPoints(item.journal || []),
           messageCount: item.messageCount || 0,
         };
       });
@@ -166,7 +167,7 @@ export default function CalendarPage() {
         if (!map[l.date]) {
           map[l.date] = { title: `Journal ${l.date}`, points: [], messageCount: 0 };
         }
-        const mergedPoints = Array.from(new Set([...(map[l.date].points || []), ...(l.points || [])]));
+        const mergedPoints = deduplicateJournalPoints([...(l.points || []), ...(map[l.date].points || [])]);
         map[l.date].points = mergedPoints;
       });
 
