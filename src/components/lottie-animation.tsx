@@ -19,9 +19,12 @@ export function LottieAnimation({ src, className = "w-72 h-72 object-contain mx-
     return <div className={`${className} bg-primary/5 rounded-full animate-pulse`} />;
   }
 
+  // Ensure spaces in URLs like "/Summer Buddy.json" are safely encoded
+  const safeSrc = src.includes(" ") ? encodeURI(src) : src;
+
   return (
     <DotLottieReact
-      src={src}
+      src={safeSrc}
       loop
       autoplay
       className={className}

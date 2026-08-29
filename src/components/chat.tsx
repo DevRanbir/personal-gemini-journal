@@ -683,7 +683,7 @@ export default function Chat() {
                 ))}
               </div>
             )}
-            <div className="relative rounded-[20px] border border-border/80 bg-sidebar/80 dark:bg-card/80 backdrop-blur-md shadow-sm focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/20 transition-all has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 [&:has(input:is(:disabled))_*]:pointer-events-none">
+            <div className="relative rounded-[22px] border border-border bg-card shadow-md focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/20 transition-all has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 [&:has(input:is(:disabled))_*]:pointer-events-none">
               {(showSlashCommands || slashOptions.length > 0) && (
                 <div id="response-commands" className="border-b border-border/60 px-3 pb-3 pt-3">
                   <div className="mb-2 flex items-center justify-between gap-3">
@@ -711,7 +711,7 @@ export default function Chat() {
                       onClick={() => insertSlashCommand(option.command)}
                       disabled={isSending || editingMessageId !== null}
                       title={option.description}
-                      className="flex min-w-0 flex-col items-start rounded-lg border border-border/70 bg-background/40 px-2.5 py-2 text-left transition-colors hover:border-primary/50 hover:bg-accent disabled:pointer-events-none disabled:opacity-50"
+                      className="flex min-w-0 flex-col items-start rounded-lg border border-border/70 bg-secondary/50 px-2.5 py-2 text-left transition-colors hover:border-primary/50 hover:bg-accent disabled:pointer-events-none disabled:opacity-50"
                     >
                       <span className="w-full truncate text-xs font-semibold text-foreground">{option.command}</span>
                       <span className="mt-0.5 w-full truncate text-[10px] text-muted-foreground">{option.label}</span>
@@ -756,7 +756,7 @@ export default function Chat() {
                     type="button"
                     onClick={openSlashCommands}
                     disabled={isSending || editingMessageId !== null}
-                    className={`flex h-8 items-center gap-2 rounded-md border px-2.5 text-xs font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 ${showSlashCommands ? "border-primary/50 bg-primary/10 text-foreground" : "border-border/70 bg-background/40 text-muted-foreground hover:border-border hover:bg-accent hover:text-foreground"}`}
+                    className={`flex h-8 items-center gap-2 rounded-md border px-2.5 text-xs font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 ${showSlashCommands ? "border-primary/50 bg-primary/10 text-primary font-semibold" : "border-border/70 bg-secondary/60 text-muted-foreground hover:border-border hover:bg-secondary hover:text-foreground"}`}
                     aria-expanded={showSlashCommands}
                     aria-controls="response-commands"
                     title="Show response commands"
@@ -769,7 +769,7 @@ export default function Chat() {
                       type="button"
                       onClick={() => setLanguageMenuOpen((open) => !open)}
                       disabled={isSending || editingMessageId !== null}
-                      className="flex h-8 items-center gap-1.5 sm:gap-2 rounded-md border border-border/70 bg-background/40 px-2 sm:px-2.5 text-xs font-medium text-foreground transition-colors hover:border-border hover:bg-accent disabled:pointer-events-none disabled:opacity-50"
+                      className="flex h-8 items-center gap-1.5 sm:gap-2 rounded-md border border-border/70 bg-secondary/60 px-2 sm:px-2.5 text-xs font-medium text-foreground transition-colors hover:border-border hover:bg-secondary disabled:pointer-events-none disabled:opacity-50"
                       aria-expanded={languageMenuOpen}
                       aria-haspopup="listbox"
                     >
@@ -780,7 +780,7 @@ export default function Chat() {
                     </button>
                     {languageMenuOpen && (
                       <div
-                        className="absolute bottom-10 left-0 z-50 w-48 overflow-hidden rounded-lg border border-border/80 bg-background p-1 shadow-xl"
+                        className="absolute bottom-10 left-0 z-50 w-48 overflow-hidden rounded-lg border border-border/80 bg-popover text-popover-foreground p-1 shadow-xl"
                         role="listbox"
                       >
                         {languageOptions.map((option) => (
@@ -793,9 +793,9 @@ export default function Chat() {
                               setLanguageMenuOpen(false);
                               requestAnimationFrame(() => textareaRef.current?.focus());
                             }}
-                            className={`flex w-full items-center rounded-md bg-opacity-0 px-3 py-2 text-left text-xs transition-colors hover:bg-accent hover:text-foreground ${
+                            className={`flex w-full items-center rounded-md bg-opacity-0 px-3 py-2 text-left text-xs transition-colors hover:bg-accent hover:text-accent-foreground ${
                               option.value === messageLanguage
-                                ? "bg-accent text-foreground font-medium"
+                                ? "bg-accent text-accent-foreground font-medium"
                                 : "text-muted-foreground"
                             }`}
                             role="option"
@@ -821,7 +821,7 @@ export default function Chat() {
                     size="icon"
                     onClick={toggleSpeechToText}
                     disabled={isSending || editingMessageId !== null}
-                    className={`relative rounded-full size-8 border-none transition-[box-shadow,background-color,color] hover:bg-background hover:shadow-md ${isListening ? "bg-red-500/15 text-red-400" : "text-muted-foreground"}`}
+                    className={`relative rounded-full size-8 border border-border/50 bg-secondary/50 transition-[box-shadow,background-color,color] hover:bg-secondary hover:text-foreground hover:shadow-sm ${isListening ? "bg-red-500/15 text-red-500 border-red-500/30" : "text-muted-foreground"}`}
                     aria-label={isListening ? "Stop speech to text" : "Start speech to text"}
                     title={isListening ? "Stop speech to text" : "Speak to type"}
                   >
@@ -831,7 +831,7 @@ export default function Chat() {
                   <Button
                     variant="outline"
                     size="icon"
-                    className="rounded-full size-8 border-none hover:bg-background hover:shadow-md transition-[box-shadow]"
+                    className="rounded-full size-8 border border-border/50 bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground hover:shadow-sm transition-all flex items-center justify-center"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

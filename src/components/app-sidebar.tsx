@@ -21,6 +21,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/sidebar";
+import { useTheme } from "@/contexts/theme-context";
 import {
   RiBardLine,
   RiUser5Line,
@@ -31,6 +32,8 @@ import {
   RiCalendarEventLine,
   RiCheckDoubleLine,
   RiBookOpenLine,
+  RiSunLine,
+  RiMoonLine,
 } from "@remixicon/react";
 
 // Navigation data
@@ -96,6 +99,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const { user, isAuthenticated, isLoading } = useAuthContext();
   const { state, toggleSidebar, isMobile, setOpenMobile } = useSidebar();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
   
   React.useEffect(() => {
@@ -171,7 +175,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   };
 
   return (
-    <Sidebar {...props} className="dark !border-none z-50">
+    <Sidebar {...props} className="z-50 border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
       {/* Mobile close button */}
       {isMobile && (
         <div className="absolute top-4 right-4 z-50 md:hidden">
@@ -193,7 +197,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         {/* We only show the first parent group */}
         <SidebarGroup>
-          <SidebarGroupLabel className="uppercase text-sidebar-foreground/50">
+          <SidebarGroupLabel className="uppercase text-sidebar-foreground/60 font-bold text-[10px] tracking-wider">
             {data.navMain[0]?.title}
           </SidebarGroupLabel>
           <SidebarGroupContent className="px-2">
@@ -202,15 +206,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    className="group/menu-button font-medium gap-3 h-9 rounded-md data-[active=true]:hover:bg-transparent data-[active=true]:bg-gradient-to-b data-[active=true]:from-sidebar-primary data-[active=true]:to-sidebar-primary/70 data-[active=true]:shadow-[0_1px_2px_0_rgb(0_0_0/.05),inset_0_1px_0_0_rgb(255_255_255/.12)] [&>svg]:size-auto transition-all duration-300 ease-in-out transform hover:scale-[1.02] active:scale-[0.98]"
+                    className="group/menu-button font-medium gap-3 h-9 rounded-lg text-sidebar-foreground/80 data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[active=true]:font-bold hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground [&>svg]:size-auto transition-all duration-200 ease-in-out"
                     isActive={isItemActive(item.url)}
                     tooltip={state === "collapsed" ? item.title : undefined}
                   >
                     <Link href={item.url} prefetch={true}>
                       {item.icon && (
                         <item.icon
-                          className="text-sidebar-foreground/50 group-data-[active=true]/menu-button:text-sidebar-foreground"
-                          size={22}
+                          className="text-sidebar-foreground/70 group-data-[active=true]/menu-button:text-sidebar-accent-foreground group-hover/menu-button:text-sidebar-accent-foreground"
+                          size={20}
                           aria-hidden="true"
                         />
                       )}
@@ -226,7 +230,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         {/* Secondary Navigation */}
         <SidebarGroup>
-          <SidebarGroupLabel className="uppercase text-sidebar-foreground/50">
+          <SidebarGroupLabel className="uppercase text-sidebar-foreground/60 font-bold text-[10px] tracking-wider">
             {data.navMain[1]?.title}
           </SidebarGroupLabel>
           <SidebarGroupContent className="px-2">
@@ -235,20 +239,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuItem key={item.title}>
                   {item.isToggle ? (
                     <SidebarMenuButton
-                      className="group/menu-button font-medium gap-3 h-9 rounded-md hover:bg-sidebar-accent [&>svg]:size-auto transition-all duration-300 ease-in-out transform hover:scale-[1.02] active:scale-[0.98]"
+                      className="group/menu-button font-medium gap-3 h-9 rounded-lg text-sidebar-foreground/80 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground [&>svg]:size-auto transition-all duration-200 ease-in-out cursor-pointer"
                       onClick={toggleSidebar}
                       tooltip={state === "collapsed" ? "Toggle Sidebar" : undefined}
                     >
                       {state === "collapsed" ? (
                         <RiMenuUnfoldLine
-                          className="text-sidebar-foreground/50"
-                          size={22}
+                          className="text-sidebar-foreground/70 group-hover/menu-button:text-sidebar-accent-foreground"
+                          size={20}
                           aria-hidden="true"
                         />
                       ) : (
                         <RiMenuFoldLine
-                          className="text-sidebar-foreground/50"
-                          size={22}
+                          className="text-sidebar-foreground/70 group-hover/menu-button:text-sidebar-accent-foreground"
+                          size={20}
                           aria-hidden="true"
                         />
                       )}
@@ -257,15 +261,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   ) : (
                     <SidebarMenuButton
                       asChild
-                      className="group/menu-button font-medium gap-3 h-9 rounded-md [&>svg]:size-auto transition-all duration-300 ease-in-out transform hover:scale-[1.02] active:scale-[0.98]"
+                      className="group/menu-button font-medium gap-3 h-9 rounded-lg text-sidebar-foreground/80 data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[active=true]:font-bold hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground [&>svg]:size-auto transition-all duration-200 ease-in-out"
                       isActive={isItemActive(item.url)}
                       tooltip={state === "collapsed" ? item.title : undefined}
                     >
                       <Link href={item.url} prefetch={true}>
                         {item.icon && (
                           <item.icon
-                            className="text-sidebar-foreground/50 group-data-[active=true]/menu-button:text-primary"
-                            size={22}
+                            className="text-sidebar-foreground/70 group-data-[active=true]/menu-button:text-sidebar-accent-foreground group-hover/menu-button:text-sidebar-accent-foreground"
+                            size={20}
                             aria-hidden="true"
                           />
                         )}
@@ -275,6 +279,30 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   )}
                 </SidebarMenuItem>
               ))}
+
+              {/* Theme Toggle Button */}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className="group/menu-button font-medium gap-3 h-9 rounded-lg text-sidebar-foreground/80 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground [&>svg]:size-auto transition-all duration-200 ease-in-out cursor-pointer"
+                  onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+                  tooltip={state === "collapsed" ? (resolvedTheme === "dark" ? "Light Mode" : "Dark Mode") : undefined}
+                >
+                  {resolvedTheme === "dark" ? (
+                    <RiSunLine
+                      className="text-sidebar-foreground/70 group-hover/menu-button:text-sidebar-accent-foreground"
+                      size={20}
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <RiMoonLine
+                      className="text-sidebar-foreground/70 group-hover/menu-button:text-sidebar-accent-foreground"
+                      size={20}
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span>{resolvedTheme === "dark" ? "Light Mode" : "Dark Mode"}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
