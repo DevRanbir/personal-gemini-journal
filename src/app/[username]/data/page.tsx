@@ -314,21 +314,11 @@ const shortHash = (input: string) => {
 };
 
 const makeFingerprint = (
-  chatHistory: ChatHistory[],
   calendarEvents: CalendarEventData[],
   todoItems: TodoItemData[],
-  totalMessages: number,
   journalLogs: JournalDataLog[] = []
 ) => {
   const compact = {
-    totalMessages,
-    chatHistory: chatHistory.map((chat) => ({
-      date: chat.date,
-      messageCount: chat.messageCount,
-      lastTimestamp: chat.lastTimestamp,
-      journalCount: chat.journal?.length || 0,
-      journalTail: chat.journal?.slice(-3) || [],
-    })),
     journalLogs: journalLogs.map((log) => ({
       date: log.date,
       pointsCount: log.points?.length || 0,
@@ -366,18 +356,14 @@ const getLatestActivityAt = (
 };
 
 const buildJournalEntries = (
-  chatHistory: ChatHistory[],
   calendarEvents: CalendarEventData[],
   todoItems: TodoItemData[],
   journalLogs: JournalDataLog[] = []
 ) => {
-  const historyPoints = chatHistory.flatMap((chat) =>
-    (chat.journal || []).map((point) => `${chat.date}: ${point.replace(/^\d+[\.)]\s*/, "").trim()}`)
-  );
   const logPoints = journalLogs.flatMap((log) =>
     (log.points || []).map((point) => `${log.date}: ${point.replace(/^\d+[\.)]\s*/, "").trim()}`)
   );
-  const journalLines = deduplicateJournalPoints([...historyPoints, ...logPoints]);
+  const journalLines = deduplicateJournalPoints(logPoints);
   const eventLines = calendarEvents.map((event) => `Calendar ${event.start}: ${event.title}${event.description ? ` - ${event.description}` : ""}`);
   const todoLines = todoItems.map((todo) => `Todo ${todo.completed ? "completed" : "pending"}${todo.dueDate ? ` due ${todo.dueDate}` : ""}: ${todo.title}`);
   return [...journalLines, ...eventLines, ...todoLines].slice(-160).join("\n");
@@ -692,10 +678,9 @@ export default function MetricsPage({ params }: PageProps) {
 
         recentActivity.sort((a, b) => b.time.getTime() - a.time.getTime());
 
-        const allHighlightPoints = deduplicateJournalPoints([
-          ...chatHistory.flatMap(c => c.journal || []),
-          ...journalLogs.flatMap(l => l.points || [])
-        ]);
+        const allHighlightPoints = deduplicateJournalPoints(
+          journalLogs.flatMap(l => l.points || [])
+        );
         const totalJournalHighlights = allHighlightPoints.length;
         const latestActivityAt = getLatestActivityAt(chatHistory, calendarEvents, todoItems);
         const stats: MetricsSourceStats = {
@@ -709,8 +694,8 @@ export default function MetricsPage({ params }: PageProps) {
           totalEvents: calendarEvents.length,
           latestActivityAt,
         };
-        const fingerprint = makeFingerprint(chatHistory, calendarEvents, todoItems, totalMessages, journalLogs);
-        const journalEntries = buildJournalEntries(chatHistory, calendarEvents, todoItems, journalLogs);
+        const fingerprint = makeFingerprint(calendarEvents, todoItems, journalLogs);
+        const journalEntries = buildJournalEntries(calendarEvents, todoItems, journalLogs);
 
         setMetrics({
           ...stats,
