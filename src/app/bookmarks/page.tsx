@@ -215,9 +215,9 @@ export default function BookmarksPage() {
                       </div>
                       
                       {/* Filter and Sort */}
-                      <div className="flex gap-3">
+                      <div className="flex gap-2 sm:gap-3 w-full sm:w-auto">
                         <Select value={filterBy} onValueChange={setFilterBy}>
-                          <SelectTrigger className="w-40 h-9">
+                          <SelectTrigger className="w-1/2 sm:w-40 h-9">
                             <RiFilterLine size={14} className="mr-1" />
                             <SelectValue />
                           </SelectTrigger>
@@ -233,7 +233,7 @@ export default function BookmarksPage() {
                         </Select>
                         
                         <Select value={sortBy} onValueChange={setSortBy}>
-                          <SelectTrigger className="w-40 h-9">
+                          <SelectTrigger className="w-1/2 sm:w-40 h-9">
                             {sortBy === "oldest" ? (
                               <RiSortAsc size={14} className="mr-1" />
                             ) : (

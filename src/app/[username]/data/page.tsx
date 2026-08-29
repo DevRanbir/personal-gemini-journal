@@ -427,7 +427,7 @@ const BarMetricChart = ({ rows, height = 210 }: { rows?: NamedValue[]; height?: 
         <BarChart data={cleanRows} layout="vertical" margin={{ top: 4, right: 8, left: 4, bottom: 4 }}>
           <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke={chartGridColor} />
           <XAxis type="number" hide domain={[0, "dataMax"]} />
-          <YAxis dataKey="name" type="category" width={112} tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: chartTextColor }} />
+          <YAxis dataKey="name" type="category" width={85} tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: chartTextColor }} />
           <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(255,255,255,0.05)" }} />
           <Bar dataKey="value" radius={[0, 6, 6, 0]} barSize={18}>
             {cleanRows.map((_, index) => (
@@ -526,12 +526,12 @@ const DataTable = ({
   }
 
   return (
-    <div className="min-w-0 overflow-hidden rounded-lg border border-border/70">
-      <table className="w-full table-fixed text-sm">
+    <div className="min-w-0 overflow-x-auto rounded-lg border border-border/70">
+      <table className="w-full text-xs sm:text-sm">
         <thead className="bg-muted/60 text-xs uppercase text-muted-foreground">
           <tr>
             {columns.map((column) => (
-              <th key={column} className="px-3 py-2 text-left font-medium">{column}</th>
+              <th key={column} className="px-3 py-2 text-left font-medium whitespace-nowrap">{column}</th>
             ))}
           </tr>
         </thead>

@@ -275,20 +275,20 @@ export default function TodoPage() {
               </div>
 
               {/* Main Layout Container matching the uploaded reference image design */}
-              <div className="py-6 space-y-8 max-w-5xl w-full mx-auto">
+              <div className="py-4 sm:py-6 space-y-6 sm:space-y-8 max-w-5xl w-full mx-auto">
                 {/* Top Page Header with Large Title & Count Badge */}
-                <div className="flex items-center gap-3.5">
-                  <h1 className="text-4xl font-extrabold tracking-tight text-foreground">
+                <div className="flex items-center gap-3">
+                  <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
                     Upcoming
                   </h1>
-                  <span className="bg-secondary text-foreground text-sm font-semibold rounded-xl px-3 py-1 border border-border shadow-xs">
+                  <span className="bg-secondary text-foreground text-xs sm:text-sm font-semibold rounded-xl px-2.5 sm:px-3 py-0.5 sm:py-1 border border-border shadow-xs">
                     {todos.length}
                   </span>
                 </div>
 
                 {/* SECTION 1: TODAY (Full Width Card) */}
-                <div className="rounded-3xl bg-card border border-border/80 p-6 space-y-4 shadow-xs">
-                  <h2 className="text-xl font-bold tracking-tight text-foreground">Today</h2>
+                <div className="rounded-2xl sm:rounded-3xl bg-card border border-border/80 p-4 sm:p-6 space-y-4 shadow-xs">
+                  <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">Today</h2>
 
                   {/* Inline Add Task Input for Today */}
                   <form
@@ -383,10 +383,10 @@ export default function TodoPage() {
                 </div>
 
                 {/* BOTTOM GRID (2 COLUMNS: TOMORROW & THIS WEEK) */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   {/* SECTION 2: TOMORROW */}
-                  <div className="rounded-3xl bg-card border border-border/80 p-6 space-y-4 shadow-xs">
-                    <h2 className="text-xl font-bold tracking-tight text-foreground">Tomorrow</h2>
+                  <div className="rounded-2xl sm:rounded-3xl bg-card border border-border/80 p-4 sm:p-6 space-y-4 shadow-xs">
+                    <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">Tomorrow</h2>
 
                     <form
                       onSubmit={(e) => {
@@ -457,8 +457,8 @@ export default function TodoPage() {
                   </div>
 
                   {/* SECTION 3: THIS WEEK */}
-                  <div className="rounded-3xl bg-card border border-border/80 p-6 space-y-4 shadow-xs">
-                    <h2 className="text-xl font-bold tracking-tight text-foreground">This Week</h2>
+                  <div className="rounded-2xl sm:rounded-3xl bg-card border border-border/80 p-4 sm:p-6 space-y-4 shadow-xs">
+                    <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">This Week</h2>
 
                     <form
                       onSubmit={(e) => {
@@ -531,9 +531,9 @@ export default function TodoPage() {
 
                 {/* OVERDUE TASKS (full width, conditionally shown) */}
                 {overdueTasks.length > 0 && (
-                  <div className="rounded-3xl bg-destructive/5 border border-destructive/20 p-6 space-y-4 shadow-xs">
+                  <div className="rounded-2xl sm:rounded-3xl bg-destructive/5 border border-destructive/20 p-4 sm:p-6 space-y-4 shadow-xs">
                     <div className="flex items-center gap-2">
-                      <h2 className="text-xl font-bold tracking-tight text-destructive">Overdue</h2>
+                      <h2 className="text-lg sm:text-xl font-bold tracking-tight text-destructive">Overdue</h2>
                       <span className="bg-destructive/10 text-destructive text-xs font-semibold rounded-lg px-2.5 py-0.5 border border-destructive/20">
                         {overdueTasks.length}
                       </span>
@@ -576,9 +576,9 @@ export default function TodoPage() {
 
                 {/* FUTURE TASKS (full width, conditionally shown) */}
                 {futureTasks.length > 0 && (
-                  <div className="rounded-3xl bg-card border border-border/80 p-6 space-y-4 shadow-xs">
+                  <div className="rounded-2xl sm:rounded-3xl bg-card border border-border/80 p-4 sm:p-6 space-y-4 shadow-xs">
                     <div className="flex items-center gap-2">
-                      <h2 className="text-xl font-bold tracking-tight text-foreground">Upcoming</h2>
+                      <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">Upcoming</h2>
                       <span className="bg-secondary text-foreground text-xs font-semibold rounded-lg px-2.5 py-0.5 border border-border">
                         {futureTasks.length}
                       </span>

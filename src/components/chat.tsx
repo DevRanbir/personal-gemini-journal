@@ -762,21 +762,21 @@ export default function Chat() {
                     title="Show response commands"
                   >
                     <RiCodeSSlashLine className="size-4" aria-hidden="true" />
-                    <span>Commands</span>
+                    <span className="hidden sm:inline">Commands</span>
                   </button>
                   <div className="relative">
                     <button
                       type="button"
                       onClick={() => setLanguageMenuOpen((open) => !open)}
                       disabled={isSending || editingMessageId !== null}
-                      className="flex h-8 items-center gap-2 rounded-md border border-border/70 bg-background/40 px-2.5 text-xs font-medium text-foreground transition-colors hover:border-border hover:bg-accent disabled:pointer-events-none disabled:opacity-50"
+                      className="flex h-8 items-center gap-1.5 sm:gap-2 rounded-md border border-border/70 bg-background/40 px-2 sm:px-2.5 text-xs font-medium text-foreground transition-colors hover:border-border hover:bg-accent disabled:pointer-events-none disabled:opacity-50"
                       aria-expanded={languageMenuOpen}
                       aria-haspopup="listbox"
                     >
                       <span className="grid size-5 place-items-center rounded border border-border/70 text-[10px] text-muted-foreground" aria-hidden="true">
                         Aa
                       </span>
-                      <span>Reply to me in {selectedLanguage.label}</span>
+                      <span><span className="hidden sm:inline">Reply to me in </span>{selectedLanguage.label}</span>
                     </button>
                     {languageMenuOpen && (
                       <div

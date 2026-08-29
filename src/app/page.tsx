@@ -228,11 +228,11 @@ export default function HomePage() {
               : 'transform scale-85 opacity-70 translate-y-12'
           }`}
         >
-          <h1 className="text-6xl font-bold text-foreground mb-6 drop-shadow-lg">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-foreground mb-4 sm:mb-6 drop-shadow-lg">
             Reflect & Audit with
-            <span className="text-primary block text-[100px] leading-none">Harmony</span>
+            <span className="text-primary block text-4xl sm:text-7xl md:text-8xl lg:text-[100px] leading-none mt-2 sm:mt-0">Harmony</span>
           </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto drop-shadow-md">
+          <p className="text-sm sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto drop-shadow-md px-2">
             An AI-powered personal journal auditing web app. Capture daily reflections, audit personal progress, track mood insights, and visualize your growth with interactive charts.
           </p>
           

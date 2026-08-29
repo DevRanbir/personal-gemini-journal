@@ -375,9 +375,9 @@ export default function CalendarPage() {
               </div>
 
               {/* Controls Bar Inside Page Content */}
-              <div className="py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <h2 className="text-2xl font-bold tracking-tight text-foreground">
+              <div className="py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+                <div className="flex items-center justify-between sm:justify-start gap-4">
+                  <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
                     {format(currentDate, "MMMM yyyy")}
                   </h2>
                   <div className="flex items-center gap-1">
@@ -393,8 +393,8 @@ export default function CalendarPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 flex-wrap">
-                  <div className="flex items-center bg-secondary rounded-xl p-1 border border-border">
+                <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-between sm:justify-end">
+                  <div className="flex items-center bg-secondary rounded-xl p-1 border border-border overflow-x-auto max-w-full scrollbar-none">
                     {[
                       { id: "month", label: "Month", icon: CalendarDays },
                       { id: "week", label: "Week", icon: Columns },
@@ -406,11 +406,11 @@ export default function CalendarPage() {
                         <button
                           key={v.id}
                           onClick={() => setView(v.id as any)}
-                          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                          className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 ${
                             view === v.id ? "bg-primary text-primary-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
                           }`}
                         >
-                          <IconComp className="size-3.5 inline me-1.5" /> {v.label}
+                          <IconComp className="size-3.5 inline me-1 sm:me-1.5" /> <span className="hidden xs:inline">{v.label}</span>
                         </button>
                       );
                     })}
@@ -418,7 +418,7 @@ export default function CalendarPage() {
 
                   <Button
                     onClick={() => openCreateDialog()}
-                    className="gap-2 rounded-xl text-xs font-medium cursor-pointer shadow-xs"
+                    className="gap-1.5 sm:gap-2 rounded-xl text-xs font-medium cursor-pointer shadow-xs"
                   >
                     <Plus className="size-4" /> Add Event
                   </Button>
@@ -429,10 +429,11 @@ export default function CalendarPage() {
               <div className="flex-1">
                 {/* MONTH VIEW */}
                 {view === "month" && (
-                  <div className="grid grid-cols-7 gap-px bg-border/60 rounded-2xl overflow-hidden border border-border shadow-xs">
+                  <div className="grid grid-cols-7 gap-px bg-border/60 rounded-xl sm:rounded-2xl overflow-hidden border border-border shadow-xs">
                     {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((dayName) => (
-                      <div key={dayName} className="p-3 text-center text-xs font-semibold bg-card text-muted-foreground uppercase tracking-wider">
-                        {dayName}
+                      <div key={dayName} className="p-1.5 sm:p-3 text-center text-[10px] sm:text-xs font-semibold bg-card text-muted-foreground uppercase tracking-wider">
+                        <span className="hidden sm:inline">{dayName}</span>
+                        <span className="sm:hidden">{dayName[0]}</span>
                       </div>
                     ))}
 
@@ -453,7 +454,7 @@ export default function CalendarPage() {
                         <div
                           key={day.toString()}
                           onClick={() => openCreateDialog(day)}
-                          className={`min-h-[110px] p-2 bg-card/60 flex flex-col justify-between cursor-pointer transition-colors hover:bg-card/90 ${
+                          className={`min-h-[70px] sm:min-h-[110px] p-1 sm:p-2 bg-card/60 flex flex-col justify-between cursor-pointer transition-colors hover:bg-card/90 ${
                             !isSameMonth(day, currentDate) ? "opacity-40 bg-background/50" : ""
                           }`}
                         >
@@ -535,33 +536,35 @@ export default function CalendarPage() {
 
                 {/* WEEK VIEW */}
                 {view === "week" && (
-                  <div className="grid grid-cols-7 gap-px bg-border/60 rounded-2xl overflow-hidden border border-border shadow-xs">
-                    {weekDays.map((day) => {
-                      const dayEvents = events.filter((e) => isSameDay(day, new Date(e.start)));
-                      return (
-                        <div key={day.toString()} className="bg-card min-h-[400px] p-3 border-r border-border/50 last:border-r-0">
-                          <div className="text-center pb-3 border-b border-border/50">
-                            <div className="text-xs text-muted-foreground uppercase">{format(day, "EEE")}</div>
-                            <div className={`text-base font-bold mt-0.5 inline-block px-2 py-0.5 rounded-full ${isToday(day) ? "bg-primary text-primary-foreground" : ""}`}>
-                              {format(day, "d")}
+                  <div className="overflow-x-auto min-w-0">
+                    <div className="min-w-[600px] sm:min-w-0 grid grid-cols-7 gap-px bg-border/60 rounded-2xl overflow-hidden border border-border shadow-xs">
+                      {weekDays.map((day) => {
+                        const dayEvents = events.filter((e) => isSameDay(day, new Date(e.start)));
+                        return (
+                          <div key={day.toString()} className="bg-card min-h-[300px] sm:min-h-[400px] p-2 sm:p-3 border-r border-border/50 last:border-r-0">
+                            <div className="text-center pb-2 sm:pb-3 border-b border-border/50">
+                              <div className="text-[10px] sm:text-xs text-muted-foreground uppercase">{format(day, "EEE")}</div>
+                              <div className={`text-xs sm:text-base font-bold mt-0.5 inline-block px-1.5 sm:px-2 py-0.5 rounded-full ${isToday(day) ? "bg-primary text-primary-foreground" : ""}`}>
+                                {format(day, "d")}
+                              </div>
+                            </div>
+
+                            <div className="mt-2 sm:mt-3 space-y-1.5 sm:space-y-2">
+                              {dayEvents.map((ev) => (
+                                <div
+                                  key={ev.id}
+                                  onClick={() => openEditDialog(ev)}
+                                  className={`p-1.5 sm:p-2 rounded-xl border text-[11px] sm:text-xs cursor-pointer font-medium ${getColorClass(ev.color)}`}
+                                >
+                                  <div className="font-bold truncate">{ev.title}</div>
+                                  <div className="text-[9px] sm:text-[10px] opacity-80">{format(new Date(ev.start), "h:mm a")}</div>
+                                </div>
+                              ))}
                             </div>
                           </div>
-
-                          <div className="mt-3 space-y-2">
-                            {dayEvents.map((ev) => (
-                              <div
-                                key={ev.id}
-                                onClick={() => openEditDialog(ev)}
-                                className={`p-2 rounded-xl border text-xs cursor-pointer font-medium ${getColorClass(ev.color)}`}
-                              >
-                                <div className="font-bold truncate">{ev.title}</div>
-                                <div className="text-[10px] opacity-80">{format(new Date(ev.start), "h:mm a")}</div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
 

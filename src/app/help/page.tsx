@@ -563,14 +563,14 @@ export default function HelpPage() {
                   {/* Tab Navigation */}
                   <div className="bg-card rounded-xl border shadow-sm overflow-hidden">
                     <div className="border-b border-border/50">
-                      <div className="flex">
+                      <div className="flex overflow-x-auto no-scrollbar scrollbar-none flex-nowrap min-w-0">
                         <button
                           onClick={() => {
                             setActiveTab('faq');
                             setSearchQuery('');
                             setSelectedCategory('all');
                           }}
-                          className={`flex items-center gap-2 px-6 py-4 font-medium text-sm transition-all duration-300 ease-in-out border-b-2 transform hover:scale-[1.02] ${
+                          className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-3 sm:py-4 font-medium text-xs sm:text-sm transition-all duration-300 ease-in-out border-b-2 shrink-0 transform hover:scale-[1.02] ${
                             activeTab === 'faq'
                               ? 'border-primary text-primary bg-primary/5 scale-[1.02]'
                               : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50'
@@ -585,7 +585,7 @@ export default function HelpPage() {
                             setSearchQuery('');
                             setSelectedCategory('all');
                           }}
-                          className={`flex items-center gap-2 px-6 py-4 font-medium text-sm transition-all duration-300 ease-in-out border-b-2 transform hover:scale-[1.02] ${
+                          className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-3 sm:py-4 font-medium text-xs sm:text-sm transition-all duration-300 ease-in-out border-b-2 shrink-0 transform hover:scale-[1.02] ${
                             activeTab === 'public'
                               ? 'border-primary text-primary bg-primary/5 scale-[1.02]'
                               : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50'
@@ -601,7 +601,7 @@ export default function HelpPage() {
                               setSearchQuery('');
                               setSelectedCategory('all');
                             }}
-                            className={`flex items-center gap-2 px-6 py-4 font-medium text-sm transition-all duration-300 ease-in-out border-b-2 transform hover:scale-[1.02] ${
+                            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-3 sm:py-4 font-medium text-xs sm:text-sm transition-all duration-300 ease-in-out border-b-2 shrink-0 transform hover:scale-[1.02] ${
                               activeTab === 'user'
                                 ? 'border-primary text-primary bg-primary/5 scale-[1.02]'
                                 : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50'
@@ -617,7 +617,7 @@ export default function HelpPage() {
                             setSearchQuery('');
                             setSelectedCategory('all');
                           }}
-                          className={`flex items-center gap-2 px-6 py-4 font-medium text-sm transition-all duration-300 ease-in-out border-b-2 transform hover:scale-[1.02] ${
+                          className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-3 sm:py-4 font-medium text-xs sm:text-sm transition-all duration-300 ease-in-out border-b-2 shrink-0 transform hover:scale-[1.02] ${
                             activeTab === 'ask'
                               ? 'border-primary text-primary bg-primary/5 scale-[1.02]'
                               : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50'
