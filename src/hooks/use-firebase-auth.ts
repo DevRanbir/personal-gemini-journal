@@ -5,7 +5,7 @@ export function useFirebaseAuth() {
 
   return {
     isReady: !isLoading,
-    username: user?.displayName || user?.email?.split('@')[0] || user?.uid || null,
+    username: user?.displayName || (typeof user?.email === 'string' ? user.email.split('@')[0] : user?.uid) || null,
     user,
     isAuthenticated,
   };

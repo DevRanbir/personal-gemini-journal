@@ -76,7 +76,7 @@ export function ChatMessage({
 
   // Function to detect if message contains a table
   const hasTable = (content: string): boolean => {
-    if (!content) return false;
+    if (!content || typeof content !== 'string') return false;
     
     // Check for markdown table syntax
     const lines = content.split('\n');

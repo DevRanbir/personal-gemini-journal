@@ -276,7 +276,8 @@ export const getChatMessages = async (username: string, date?: string): Promise<
     if (!snapshot.empty) {
       const filteredDocs = snapshot.docs.filter((doc) => {
         const data = doc.data();
-        const msgDate = data.date || (data.timestamp ? new Date(data.timestamp).toISOString().split('T')[0] : '');
+        const dataDate = typeof data.date === 'string' ? data.date : '';
+        const msgDate = dataDate || (data.timestamp ? new Date(data.timestamp).toISOString().split('T')[0] : '');
         return msgDate === targetDate;
       });
 
@@ -400,7 +401,8 @@ export const subscribeToChatMessages = (
   const unsubscribe = onSnapshot(q, (snapshot) => {
     const filteredDocs = snapshot.docs.filter((doc) => {
       const data = doc.data();
-      const msgDate = data.date || (data.timestamp ? new Date(data.timestamp).toISOString().split('T')[0] : '');
+      const dataDate = typeof data.date === 'string' ? data.date : '';
+      const msgDate = dataDate || (data.timestamp ? new Date(data.timestamp).toISOString().split('T')[0] : '');
       return msgDate === date;
     });
 
@@ -714,7 +716,8 @@ export const getChatHistory = async (username: string): Promise<ChatHistory[]> =
       const dateMap: Record<string, { count: number; lastMsg: string; lastTime: number }> = {};
       intSnap.docs.forEach((d) => {
         const dData = d.data();
-        const dDate = dData.date || (dData.timestamp ? new Date(dData.timestamp).toISOString().split('T')[0] : '');
+        const dataDate = typeof dData.date === 'string' ? dData.date : '';
+        const dDate = dataDate || (dData.timestamp ? new Date(dData.timestamp).toISOString().split('T')[0] : '');
         if (!dDate) return;
         if (!dateMap[dDate]) {
           dateMap[dDate] = { count: 0, lastMsg: '', lastTime: 0 };
@@ -814,7 +817,8 @@ export const subscribeToChatHistory = (
         const dateMap: Record<string, { count: number; lastMsg: string; lastTime: number }> = {};
         intSnap.docs.forEach((d) => {
           const dData = d.data();
-          const dDate = dData.date || (dData.timestamp ? new Date(dData.timestamp).toISOString().split('T')[0] : '');
+          const dataDate = typeof dData.date === 'string' ? dData.date : '';
+          const dDate = dataDate || (dData.timestamp ? new Date(dData.timestamp).toISOString().split('T')[0] : '');
           if (!dDate) return;
           if (!dateMap[dDate]) {
             dateMap[dDate] = { count: 0, lastMsg: '', lastTime: 0 };
@@ -977,28 +981,70 @@ export const updateChatTitle = async (username: string, date: string, title: str
 
 export const deleteChatHistory = async (username: string, date: string): Promise<boolean> => {
   const isGuest = !auth.currentUser || username.startsWith('local-') || username === 'guest';
-  if (!isFirebaseAvailable() || isGuest) {
-    if (typeof window !== 'undefined') {
-      const localHistoryKey = `harmony-chat-history-${username}`;
-      const stored = localStorage.getItem(localHistoryKey);
-      let currentHistory: ChatHistory[] = [];
-      if (stored !== null) {
-        try { currentHistory = JSON.parse(stored); } catch (e) {}
-      } else {
-        currentHistory = getGuestSampleHistory();
-      }
-      const updated = currentHistory.filter(h => h.date !== date);
-      localStorage.setItem(localHistoryKey, JSON.stringify(updated));
-      window.dispatchEvent(new Event('harmony-chat-history-updated'));
+  
+  if (typeof window !== 'undefined') {
+    const localHistoryKey = `harmony-chat-history-${username}`;
+    const stored = localStorage.getItem(localHistoryKey);
+    let currentHistory: ChatHistory[] = [];
+    if (stored !== null) {
+      try { currentHistory = JSON.parse(stored); } catch (e) {}
+    } else {
+      currentHistory = getGuestSampleHistory();
     }
+    const updated = currentHistory.filter(h => h.date !== date);
+    localStorage.setItem(localHistoryKey, JSON.stringify(updated));
+
+    localStorage.removeItem(`harmony-chat-${username}-${date}`);
+    const generalKey = `harmony-chat-${username}`;
+    const generalStored = localStorage.getItem(generalKey);
+    if (generalStored) {
+      try {
+        const msgs = JSON.parse(generalStored);
+        if (Array.isArray(msgs)) {
+          const filtered = msgs.filter((m: any) => {
+            const mDate = m.date || (m.timestamp ? new Date(m.timestamp).toISOString().split('T')[0] : '');
+            return mDate !== date;
+          });
+          localStorage.setItem(generalKey, JSON.stringify(filtered));
+        }
+      } catch (e) {}
+    }
+    localStorage.removeItem(`harmony-journal-log-${username}-${date}`);
+    window.dispatchEvent(new Event('harmony-chat-history-updated'));
+  }
+
+  if (!isFirebaseAvailable() || isGuest) {
     return true;
   }
 
   try {
     const targetUserId = auth.currentUser?.uid || username;
     await deleteDoc(doc(db, "users", targetUserId, "chat_history", date));
+
+    const colRef = collection(db, "users", targetUserId, "interactions");
+    const snapshot = await getDocs(colRef);
+    if (!snapshot.empty) {
+      const deletePromises = snapshot.docs
+        .filter((docSnap) => {
+          const data = docSnap.data();
+          const dataDate = typeof data.date === 'string' ? data.date : '';
+          const msgDate = dataDate || (data.timestamp ? new Date(data.timestamp).toISOString().split('T')[0] : '');
+          return msgDate === date;
+        })
+        .map((docSnap) => deleteDoc(doc(db, "users", targetUserId, "interactions", docSnap.id)));
+      
+      await Promise.all(deletePromises);
+    }
+
+    try {
+      await deleteDoc(doc(db, "users", targetUserId, "journal_data_logs", date));
+    } catch (e) {
+      // Ignore if journal log doesn't exist for this date
+    }
+
     return true;
   } catch (error) {
+    console.error('Error deleting chat history from Firestore:', error);
     return false;
   }
 };

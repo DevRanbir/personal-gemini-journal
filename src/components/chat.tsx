@@ -60,7 +60,10 @@ function WordByWordMessage({ content, messageTimestamp }: { content: string; mes
   }, [messageTimestamp]);
 
   const words = useMemo(() => {
-    if (!content) return [];
+    if (!content || typeof content !== 'string') {
+      if (content === null || content === undefined) return [];
+      return String(content).split(/(\s+)/);
+    }
     return content.split(/(\s+)/);
   }, [content]);
 
@@ -150,7 +153,9 @@ export default function Chat() {
     }
 
     try {
-      const datePart = currentDate.split('-').slice(0, 3).join('-');
+      const strDate = typeof currentDate === 'string' ? currentDate : String(currentDate || '');
+      if (!strDate) return "A New Journal";
+      const datePart = strDate.split('-').slice(0, 3).join('-');
       const [year, month, day] = datePart.split('-').map(Number);
       const d = new Date(year, month - 1, day);
       if (isNaN(d.getTime())) {

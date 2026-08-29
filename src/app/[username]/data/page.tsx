@@ -843,7 +843,7 @@ export default function MetricsPage({ params }: PageProps) {
                   <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                     <div className="space-y-2">
                       <h1 className="text-2xl font-bold tracking-tight">
-                        {user ? `Welcome back, ${user.displayName?.split(" ")[0] || user.email?.split("@")[0] || "User"}` : "Harmony Metrics Demo"}
+                        {user ? `Welcome back, ${(typeof user.displayName === 'string' ? user.displayName.split(" ")[0] : null) || (typeof user.email === 'string' ? user.email.split("@")[0] : null) || "User"}` : "Harmony Metrics Demo"}
                       </h1>
                       <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
                         AI-powered journal auditing across emotions, goals, learning, productivity, habits, themes, reminders, and ideas. Refreshing this page only loads saved data; Gemini runs only when you click generate.

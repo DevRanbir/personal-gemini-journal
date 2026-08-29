@@ -118,6 +118,7 @@ export function ChatHistorySection() {
   };
 
   const formatMonthDate = (dateString: string) => {
+    if (!dateString || typeof dateString !== 'string') return String(dateString || '');
     try {
       const datePart = dateString.split('-').slice(0, 3).join('-');
       const [year, month, day] = datePart.split('-').map(Number);
@@ -152,6 +153,7 @@ export function ChatHistorySection() {
   };
 
   const formatExactDateTag = (dateString: string) => {
+    if (!dateString || typeof dateString !== 'string') return String(dateString || '');
     try {
       const datePart = dateString.split('-').slice(0, 3).join('-');
       const [year, month, day] = datePart.split('-').map(Number);
@@ -167,9 +169,24 @@ export function ChatHistorySection() {
   };
 
   const truncateMessage = (message: any, maxLength: number = 40) => {
-    const str = typeof message === 'string'
+    let str = typeof message === 'string'
       ? message
       : (typeof message === 'object' && message !== null ? (message.content || message.text || JSON.stringify(message)) : String(message || ''));
+
+    if (typeof str === 'string' && str.trim().startsWith('{')) {
+      try {
+        const parsed = JSON.parse(str.trim());
+        if (parsed.response && typeof parsed.response === 'string') {
+          str = parsed.response;
+        } else if (parsed.text && typeof parsed.text === 'string') {
+          str = parsed.text;
+        } else if (parsed.content && typeof parsed.content === 'string') {
+          str = parsed.content;
+        }
+      } catch (e) {
+        // Keep str as is if parsing fails
+      }
+    }
 
     if (str.length <= maxLength) return str;
     return str.substring(0, maxLength) + '...';

@@ -124,7 +124,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     }
 
     return [{
-      name: user.displayName || user.email?.split('@')[0] || "User",
+      name: user.displayName || (typeof user.email === 'string' ? user.email.split('@')[0] : "User"),
       logo: getUserAvatarUrl(user),
     }];
   }, [user, isAuthenticated, isLoading, mounted]);

@@ -906,7 +906,11 @@ export function ChatProvider({ children, onHistoryUpdate }: {
             getTodoItems(chatOwnerId),
           ]);
 
-          const activeEvents = calEvents.map(e => `- Event: "${e.title}"${e.description ? ` (${e.description})` : ''} on ${e.start ? e.start.split('T')[0] : 'scheduled date'}${e.location ? ` at ${e.location}` : ''}`);
+          const activeEvents = calEvents.map(e => {
+            const startStr = typeof e.start === 'string' ? e.start : (e.start && typeof (e.start as any).toISOString === 'function' ? (e.start as any).toISOString() : String(e.start || ''));
+            const dateStr = startStr ? startStr.split('T')[0] : 'scheduled date';
+            return `- Event: "${e.title}"${e.description ? ` (${e.description})` : ''} on ${dateStr}${e.location ? ` at ${e.location}` : ''}`;
+          });
           const activeTodos = todoItems.map(t => `- Task: "${t.title}" (Due: ${t.dueDate || 'No date'}, Completed: ${t.completed ? 'Yes' : 'No'})`);
 
           calendarContext = `\n\n[USER CALENDAR EVENTS & TODOS FROM DATABASE]:\n` + 
