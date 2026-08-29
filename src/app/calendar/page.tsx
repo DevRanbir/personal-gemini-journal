@@ -35,6 +35,8 @@ import {
   deleteCalendarEvent, 
   updateCalendarEvent,
   subscribeToChatHistory,
+  subscribeToJournalDataLogs,
+  getAllJournalDataLogs,
   deleteJournalPointFromHistory,
   type CalendarEventData 
 } from "@/lib/firebase-service";
@@ -145,9 +147,14 @@ export default function CalendarPage() {
     const unsubEvents = subscribeToCalendarEvents(user.uid, (data) => {
       setEvents(data);
     });
-    const unsubHistory = subscribeToChatHistory(user.uid, async (history) => {
+
+    let currentHistoryItems: any[] = [];
+    let currentLogsItems: any[] = [];
+
+    const rebuildJournalMap = () => {
       const map: Record<string, { title: string; points: string[]; messageCount: number }> = {};
-      history.forEach(item => {
+      
+      currentHistoryItems.forEach(item => {
         map[item.date] = {
           title: item.title,
           points: item.journal || [],
@@ -155,22 +162,31 @@ export default function CalendarPage() {
         };
       });
 
-      try {
-        const logs = await getAllJournalDataLogs(user.uid);
-        logs.forEach(l => {
-          if (!map[l.date]) {
-            map[l.date] = { title: `Journal ${l.date}`, points: [], messageCount: 0 };
-          }
-          const mergedPoints = Array.from(new Set([...(map[l.date].points || []), ...(l.points || [])]));
-          map[l.date].points = mergedPoints;
-        });
-      } catch (e) {}
+      currentLogsItems.forEach(l => {
+        if (!map[l.date]) {
+          map[l.date] = { title: `Journal ${l.date}`, points: [], messageCount: 0 };
+        }
+        const mergedPoints = Array.from(new Set([...(map[l.date].points || []), ...(l.points || [])]));
+        map[l.date].points = mergedPoints;
+      });
 
       setJournalMap(map);
+    };
+
+    const unsubHistory = subscribeToChatHistory(user.uid, (history) => {
+      currentHistoryItems = history;
+      rebuildJournalMap();
     });
+
+    const unsubLogs = subscribeToJournalDataLogs(user.uid, (logs) => {
+      currentLogsItems = logs;
+      rebuildJournalMap();
+    });
+
     return () => {
       unsubEvents();
       unsubHistory();
+      unsubLogs();
     };
   }, [user, authLoading]);
 

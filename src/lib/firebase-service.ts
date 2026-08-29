@@ -1037,7 +1037,7 @@ export const deleteChatHistory = async (username: string, date: string): Promise
     }
 
     try {
-      await deleteDoc(doc(db, "users", targetUserId, "journal_data_logs", date));
+      await deleteDoc(doc(db, "users", targetUserId, "journal_logs", date));
     } catch (e) {
       // Ignore if journal log doesn't exist for this date
     }
@@ -1676,5 +1676,30 @@ export const getAllJournalDataLogs = async (
   } catch (error) {
     console.error('Error getting all journal logs:', error);
     return [];
+  }
+};
+
+export const subscribeToJournalDataLogs = (
+  username: string,
+  callback: (logs: JournalDataLog[]) => void
+): (() => void) => {
+  if (!isFirebaseAvailable()) {
+    callback([]);
+    return () => {};
+  }
+  try {
+    const targetUserId = auth.currentUser?.uid || username;
+    const colRef = collection(db, "users", targetUserId, "journal_logs");
+    return onSnapshot(colRef, (snapshot) => {
+      const logs = snapshot.docs.map(doc => doc.data() as JournalDataLog);
+      callback(logs);
+    }, (err) => {
+      console.error('Error listening to journal_logs:', err);
+      callback([]);
+    });
+  } catch (error) {
+    console.error('Error subscribing to journal logs:', error);
+    callback([]);
+    return () => {};
   }
 };
