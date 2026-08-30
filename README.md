@@ -1,12 +1,47 @@
-# 🚀 Personal Gemini Journal — Authenticated & UID-Isolated AI Application
+# 🚀 Harmony — Personal Journal Auditing Web App
 
 [![Cloud Run](https://img.shields.io/badge/Google_Cloud_Run-Deployed-4285F4?logo=googlecloud&logoColor=white)](https://personal-gemini-journal-344135619629.asia-south1.run.app)
 [![Verification Label](https://img.shields.io/badge/Verification_Label-dev--tutorial=cloud--run--ai--challenge-34A853)](https://codelabs.developers.google.com/codelabs/cloud-run/cloud-run-ai-challenge)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-> Production-ready, authenticated AI reflection application built for the **Google Cloud Gen AI Academy APAC 2026 Ideathon Challenge**.  
+> **Reflect & Audit with Harmony**  
+> An AI-powered personal journal auditing web app. Capture daily reflections, audit personal progress, track mood insights, and visualize your growth with interactive charts.  
+>  
 > **Live Prototype**: [https://personal-gemini-journal-344135619629.asia-south1.run.app](https://personal-gemini-journal-344135619629.asia-south1.run.app)  
 > **Official Codelab Reference**: [Build a User-Authenticated AI Application with Custom Instructions on Google AI Studio & Cloud Run Codelab](https://codelabs.developers.google.com/codelabs/cloud-run/cloud-run-ai-challenge)
+
+---
+
+## 🌟 Feature Highlights
+
+* **🤖 Smart Journal Auditing**: Context-aware reflection analysis with auto-extracted daily highlights.
+* **📈 Interactive Chart Audits**: AI creates visual progress line charts, score trends, and data metrics on demand.
+* **🔒 100% Owner Data Isolation**: Owner-isolated Firestore storage for chats, logs, and calendar entries.
+* **📊 Progress Charts**: Interactive Recharts bar, line, pie, and scatter analytics for deep progress auditing.
+* **⚡ Firestore Journal Sync**: Real-time Firestore sync across user chats, data logs, and calendar events.
+* **🛡️ Firebase Security**: Federated Google Sign-In and strict UID security rules to prevent cross-user leakage.
+* **✨ Auto Highlights**: Auto-extracts daily reflection logs, birthdays, and checkable tasks from chat conversations.
+
+---
+
+## 🖥️ Your Digital Journal Auditing Workspace
+
+*Everything you need to reflect, audit goals, and track your life journey in one place.*
+
+* **💬 Intelligent Journal Conversations**: AI-enhanced journaling with context-aware memory and past log auditing.
+* **📉 Visual Progress Analytics**: Dynamic performance graphs, test score trackers, and sentiment trends.
+* **📚 Knowledge & Journal Workflows**: Search history, compare past entries, export highlights, and copy clean summaries.
+* **🎛️ Unified Harmony Dashboard**: All your daily logs, reflection charts, and upcoming calendar events in one place.
+
+---
+
+## 📊 Impact & Scale Metrics
+
+| Metric | Description |
+| :--- | :--- |
+| **`∞` Personal Memories** | Structured daily reflections auto-summarized and safely preserved. |
+| **`100%` UID Privacy** | Strict owner-bound Firestore security rules with zero hardcoded keys. |
+| **`24/7` AI Reflection Companion** | Always ready to listen, audit goals, and draw progress charts. |
 
 ---
 
@@ -18,24 +53,24 @@ This project strictly implements every requirement outlined in the official Goog
 | :--- | :--- | :---: |
 | **1. AI Studio Custom Instructions** | Enforced security system prompt covering threat modeling, UID isolation, least privilege, and sanitization. | ✅ Completed |
 | **2. Firebase Authentication** | Federated Google Sign-In & Email/Password auth integrated via Firebase Client SDK. | ✅ Completed |
-| **3. Multi-turn Gemini AI Interaction** | Conversational reflection engine using Gemini 2.5 API with conversation history context. | ✅ Completed |
+| **3. Multi-turn AI Interaction** | Conversational reflection engine using Gemini API with conversation history context. | ✅ Completed |
 | **4. User-Isolated Firestore Storage** | All records stored under `/users/{userId}/*` enforced by strict `request.auth.uid == userId` rules. | ✅ Completed |
 | **5. Secret Manager Integration** | `GEMINI_API_KEY` fetched dynamically at runtime from GCP Secret Manager (zero hardcoded secrets). | ✅ Completed |
 | **6. Production Cloud Run Hosting** | Deployed with dedicated service account `personal-gemini-journal-sa@ai-barista-track-1.iam.gserviceaccount.com`. | ✅ Completed |
 | **7. Mandatory Verification Label** | Deployed with label `--update-labels dev-tutorial=cloud-run-ai-challenge`. | ✅ Completed |
-| **8. Original Feature Enhancements** | Journal Insights analytics dashboard & AI-extracted Action Items checklist. | ✅ Completed |
+| **8. Original Feature Enhancements** | Harmony Journal Insights analytics dashboard & AI-extracted Action Items checklist. | ✅ Completed |
 
 ---
 
 ## 📖 Project Overview
 
-**Personal Gemini Journal** is a secure, private journaling and reflection assistant. Built with Next.js 15, Firebase Authentication, Cloud Firestore, and the Gemini 2.5 API, it allows users to log thoughts, have multi-turn interactive reflection sessions, automatically extract actionable tasks, and visualize personal journal analytics.
+**Harmony — Personal Journal Auditing Web App** is a secure, private journaling and reflection assistant. Built with Next.js 16, Firebase Authentication, Cloud Firestore, and the Gemini API, it allows users to log thoughts, have multi-turn interactive reflection sessions, automatically extract actionable tasks, and visualize personal journal analytics.
 
 ### Key Technologies
-- **Frontend / Framework**: Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS, Framer Motion, Lucide Icons, Recharts
+- **Frontend / Framework**: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS, Framer Motion, Lucide Icons, Recharts
 - **Authentication**: Firebase Authentication (Google Sign-In & Email/Password)
 - **Database**: Cloud Firestore (Document storage with user UID scoping)
-- **AI Engine**: Google Gemini 2.5 API (Multi-turn chat, sentiment analysis, task extraction)
+- **AI Engine**: Google Gemini API (Multi-turn chat, sentiment analysis, task extraction, chart rendering)
 - **Secret Management**: Google Cloud Secret Manager (`GEMINI_API_KEY`)
 - **Hosting & Infrastructure**: Google Cloud Run (Containerized via Docker with least-privilege IAM service account)
 
