@@ -4,19 +4,16 @@ import { getFirestore } from 'firebase/firestore';
 import type { Database } from 'firebase/database';
 
 const hasFirebaseConfig = () => {
-  return !!(
-    process.env.NEXT_PUBLIC_FIREBASE_API_KEY ||
-    ""
-  );
+  return !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
 };
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "",
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "ai-barista-track-1.firebaseapp.com",
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "ai-barista-track-1",
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "ai-barista-track-1.firebasestorage.app",
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "344135619629",
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:344135619629:web:4e33b081f45a60ca6b14a4",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || '',
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || '',
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || '',
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || '',
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || '',
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || '',
 };
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
