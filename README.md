@@ -12,7 +12,9 @@
 > An AI-powered personal journal auditing web app. Capture daily reflections, audit personal progress, track mood insights, and visualize your growth with interactive charts.  
 >  
 > **Live Prototype**: [https://personal-gemini-journal-344135619629.asia-south1.run.app](https://personal-gemini-journal-344135619629.asia-south1.run.app)  
+> **Youtube Demo Video**: [https://youtu.be/nUR0T-XXR5M?si=Nuwi7fVkggNVob1T](https://youtu.be/nUR0T-XXR5M?si=Nuwi7fVkggNVob1T) <br>
 > **Official Codelab Reference**: [Build a User-Authenticated AI Application with Custom Instructions on Google AI Studio & Cloud Run Codelab](https://codelabs.developers.google.com/codelabs/cloud-run/cloud-run-ai-challenge)
+
 
 ---
 
