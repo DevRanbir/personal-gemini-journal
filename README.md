@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="1862" height="1055" alt="Harmony landing page" src = "https://github.com/user-attachments/assets/81289f7a-ed85-45d6-ac38-a339f8f77ec8" />
+</p>
+
 # 🚀 Harmony — Personal Journal Auditing Web App
 
 [![Cloud Run](https://img.shields.io/badge/Google_Cloud_Run-Deployed-4285F4?logo=googlecloud&logoColor=white)](https://personal-gemini-journal-344135619629.asia-south1.run.app)
@@ -74,6 +78,15 @@ This project strictly implements every requirement outlined in the official Goog
 - **Secret Management**: Google Cloud Secret Manager (`GEMINI_API_KEY`)
 - **Hosting & Infrastructure**: Google Cloud Run (Containerized via Docker with least-privilege IAM service account)
 
+### Screenshots
+<p align = "Left">
+  <img width = "500" height = "300" alt="Harmony landing page" src = "public/Screenshot 2026-08-30 155434.png" />
+   <img width = "500" height = "300" alt="Harmony landing page" src = "public/Screenshot 2026-08-30 155448.png" />
+   <img width = "500" height = "300" alt="Harmony landing page" src = "public/Screenshot 2026-08-30 155502.png" />
+   <img width = "500" height = "300" alt="Harmony landing page" src = "public/Screenshot 2026-08-30 155512.png" />
+   <img width = "500" height = "300" alt="Harmony landing page" src = "public/Screenshot 2026-08-30 155527.png" />
+   <img width = "500" height = "300" alt="Harmony landing page" src = "public/Screenshot 2026-08-30 155603.png" />
+</p>
 ---
 
 ## 🏗️ Architecture & Security Model
