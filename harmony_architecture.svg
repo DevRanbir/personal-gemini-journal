@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="100%" height="100%" style="background-color: #0B0F19; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+
+    <linearGradient id="gcpGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+
+    <linearGradient id="firebaseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D97706" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+
+    <linearGradient id="geminiGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4F46E5" />
+      <stop offset="100%" stop-color="#9333EA" />
+    </linearGradient>
+
+    <linearGradient id="secGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+
+    <!-- Arrowhead -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#60A5FA" />
+    </marker>
+    <marker id="greenArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#34D399" />
+    </marker>
+    
+    <!-- Drop Shadow -->
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="750" fill="url(#bgGrad)" />
+
+  <!-- Grid overlay -->
+  <g opacity="0.04" stroke="#FFFFFF" stroke-width="1">
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" />
+    </pattern>
+    <rect width="1200" height="750" fill="url(#grid)" />
+  </g>
+
+  <!-- Title Section -->
+  <g transform="translate(60, 45)">
+    <text x="0" y="0" fill="#38BDF8" font-size="14" font-weight="700" letter-spacing="1.5">GOOGLE CLOUD GEN AI ACADEMY IDEATHON</text>
+    <text x="0" y="28" fill="#FFFFFF" font-size="24" font-weight="800">Harmony — Architecture &amp; Security Model</text>
+    <text x="0" y="48" fill="#94A3B8" font-size="13">Production-Ready, Authenticated &amp; UID-Isolated System Topology</text>
+  </g>
+
+  <!-- Service Verification Badge -->
+  <g transform="translate(850, 40)" filter="url(#shadow)">
+    <rect width="290" height="36" rx="18" fill="#1E293B" stroke="#34D399" stroke-width="1.5" />
+    <circle cx="20" cy="18" r="6" fill="#34D399" />
+    <text x="34" y="22" fill="#E2E8F0" font-size="12" font-weight="600">Verification Tag: dev-tutorial=cloud-run-ai-challenge</text>
+  </g>
+
+  <!-- Layer 1: Client Browser -->
+  <g transform="translate(60, 120)" filter="url(#shadow)">
+    <rect width="1080" height="100" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
+    <rect x="0" y="0" width="1080" height="30" rx="12" fill="#1E293B" />
+    <circle cx="20" cy="15" r="5" fill="#EF4444" />
+    <circle cx="36" cy="15" r="5" fill="#F59E0B" />
+    <circle cx="52" cy="15" r="5" fill="#10B981" />
+    <text x="72" y="19" fill="#94A3B8" font-size="12" font-weight="600">Client Browser — Next.js 16 Web Application</text>
+    
+    <!-- Subcomponents -->
+    <g transform="translate(30, 45)">
+      <rect width="230" height="42" rx="8" fill="#0F172A" stroke="#38BDF8" stroke-width="1" />
+      <text x="15" y="26" fill="#F8FAFC" font-size="13" font-weight="700">🎨 Harmony UI</text>
+      <text x="110" y="26" fill="#94A3B8" font-size="11">App Router (React 19)</text>
+    </g>
+    <g transform="translate(280, 45)">
+      <rect width="230" height="42" rx="8" fill="#0F172A" stroke="#818CF8" stroke-width="1" />
+      <text x="15" y="26" fill="#F8FAFC" font-size="13" font-weight="700">📊 Recharts Engine</text>
+      <text x="135" y="26" fill="#94A3B8" font-size="11">Visual Progress</text>
+    </g>
+    <g transform="translate(530, 45)">
+      <rect width="230" height="42" rx="8" fill="#0F172A" stroke="#F472B6" stroke-width="1" />
+      <text x="15" y="26" fill="#F8FAFC" font-size="13" font-weight="700">✨ Framer Motion</text>
+      <text x="125" y="26" fill="#94A3B8" font-size="11">Smooth UI Flow</text>
+    </g>
+    <g transform="translate(780, 45)">
+      <rect width="270" height="42" rx="8" fill="#0F172A" stroke="#34D399" stroke-width="1" />
+      <text x="15" y="26" fill="#F8FAFC" font-size="13" font-weight="700">🔒 Client Firebase SDK</text>
+      <text x="155" y="26" fill="#94A3B8" font-size="11">UID Context</text>
+    </g>
+  </g>
+
+  <!-- Arrow 1: HTTPS -->
+  <path d="M 600 220 L 600 260" stroke="#60A5FA" stroke-width="2.5" stroke-dasharray="6,4" marker-end="url(#arrow)" />
+  <rect x="545" y="230" width="110" height="20" rx="10" fill="#0F172A" stroke="#60A5FA" stroke-width="1" />
+  <text x="600" y="244" fill="#60A5FA" font-size="11" font-weight="700" text-anchor="middle">HTTPS / REST</text>
+
+  <!-- Layer 2: Cloud Run Container -->
+  <g transform="translate(60, 265)" filter="url(#shadow)">
+    <rect width="1080" height="115" rx="12" fill="url(#cardGrad)" stroke="#2563EB" stroke-width="2" />
+    <rect x="20" y="16" width="180" height="28" rx="6" fill="url(#gcpGrad)" />
+    <text x="110" y="34" fill="#FFFFFF" font-size="13" font-weight="700" text-anchor="middle">Google Cloud Run</text>
+    <text x="215" y="34" fill="#94A3B8" font-size="12" font-weight="600">Managed Service Identity: personal-gemini-journal-sa@ai-barista-track-1.iam.gserviceaccount.com</text>
+
+    <!-- Submodules -->
+    <g transform="translate(30, 55)">
+      <rect width="320" height="45" rx="8" fill="#0F172A" stroke="#3B82F6" stroke-width="1" />
+      <text x="15" y="27" fill="#F8FAFC" font-size="13" font-weight="700">⚡ API Routes Server Proxy</text>
+      <text x="195" y="27" fill="#94A3B8" font-size="11">(/api/chat, /api/insights)</text>
+    </g>
+    <g transform="translate(380, 55)">
+      <rect width="320" height="45" rx="8" fill="#0F172A" stroke="#10B981" stroke-width="1" />
+      <text x="15" y="27" fill="#F8FAFC" font-size="13" font-weight="700">🛡️ AI Studio Constitution</text>
+      <text x="190" y="27" fill="#94A3B8" font-size="11">Threat Modeling Rules</text>
+    </g>
+    <g transform="translate(730, 55)">
+      <rect width="320" height="45" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1" />
+      <text x="15" y="27" fill="#F8FAFC" font-size="13" font-weight="700">📦 Standalone Docker Container</text>
+      <text x="220" y="27" fill="#94A3B8" font-size="11">Least Privilege</text>
+    </g>
+  </g>
+
+  <!-- Connectors from Cloud Run down to Services -->
+  <path d="M 330 380 L 330 425" stroke="#60A5FA" stroke-width="2" marker-end="url(#arrow)" />
+  <path d="M 870 380 L 870 425" stroke="#60A5FA" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Layer 3: Services Layer -->
+  <!-- Firebase Auth Card -->
+  <g transform="translate(60, 430)" filter="url(#shadow)">
+    <rect width="520" height="120" rx="12" fill="url(#cardGrad)" stroke="#F59E0B" stroke-width="1.5" />
+    <rect x="20" y="16" width="160" height="26" rx="6" fill="url(#firebaseGrad)" />
+    <text x="100" y="33" fill="#FFFFFF" font-size="12" font-weight="700" text-anchor="middle">Firebase Auth</text>
+    <text x="195" y="33" fill="#E2E8F0" font-size="13" font-weight="700">Identity &amp; Session Management</text>
+    
+    <text x="20" y="68" fill="#94A3B8" font-size="12">• Federated Google Sign-In &amp; Email/Password Auth</text>
+    <text x="20" y="88" fill="#94A3B8" font-size="12">• Generates Immutable Auth JWT Token with Firebase UID</text>
+    <text x="20" y="108" fill="#94A3B8" font-size="12">• Client &amp; Server-Side Session Verification</text>
+  </g>
+
+  <!-- Google Gemini API Card -->
+  <g transform="translate(620, 430)" filter="url(#shadow)">
+    <rect width="520" height="120" rx="12" fill="url(#cardGrad)" stroke="#818CF8" stroke-width="1.5" />
+    <rect x="20" y="16" width="160" height="26" rx="6" fill="url(#geminiGrad)" />
+    <text x="100" y="33" fill="#FFFFFF" font-size="12" font-weight="700" text-anchor="middle">Google Gemini API</text>
+    <text x="195" y="33" fill="#E2E8F0" font-size="13" font-weight="700">AI Engine &amp; Reflection Intelligence</text>
+
+    <text x="20" y="68" fill="#94A3B8" font-size="12">• Multi-Turn Conversational Journaling &amp; Past Log Auditing</text>
+    <text x="20" y="88" fill="#94A3B8" font-size="12">• Time-Decayed Sentiment Analysis &amp; Progress Metrics Calculation</text>
+    <text x="20" y="108" fill="#94A3B8" font-size="12">• Automated Action Items &amp; Dynamic To-Do Checklist Parsing</text>
+  </g>
+
+  <!-- Connectors from Services down to Storage & Secrets -->
+  <path d="M 320 550 L 320 595" stroke="#34D399" stroke-width="2" marker-end="url(#greenArrow)" />
+  <path d="M 880 550 L 880 595" stroke="#34D399" stroke-width="2" marker-end="url(#greenArrow)" />
+
+  <!-- Layer 4: Storage & Secret Management -->
+  <!-- Cloud Firestore Card -->
+  <g transform="translate(60, 600)" filter="url(#shadow)">
+    <rect width="520" height="115" rx="12" fill="url(#cardGrad)" stroke="#10B981" stroke-width="1.5" />
+    <rect x="20" y="16" width="160" height="26" rx="6" fill="url(#secGrad)" />
+    <text x="100" y="33" fill="#FFFFFF" font-size="12" font-weight="700" text-anchor="middle">Cloud Firestore</text>
+    <text x="195" y="33" fill="#E2E8F0" font-size="13" font-weight="700">UID-Isolated Database Storage</text>
+
+    <text x="20" y="65" fill="#34D399" font-weight="600" font-size="12">Document Path: /users/{userId}/interactions/{interactionId}</text>
+    <text x="20" y="85" fill="#94A3B8" font-size="12">• Firestore Security Rule: request.auth.uid == userId</text>
+    <text x="20" y="103" fill="#94A3B8" font-size="12">• 100% Owner Isolation: Zero cross-tenant data leakage</text>
+  </g>
+
+  <!-- Cloud Secret Manager Card -->
+  <g transform="translate(620, 600)" filter="url(#shadow)">
+    <rect width="520" height="115" rx="12" fill="url(#cardGrad)" stroke="#10B981" stroke-width="1.5" />
+    <rect x="20" y="16" width="180" height="26" rx="6" fill="url(#secGrad)" />
+    <text x="110" y="33" fill="#FFFFFF" font-size="12" font-weight="700" text-anchor="middle">Cloud Secret Manager</text>
+    <text x="215" y="33" fill="#E2E8F0" font-size="13" font-weight="700">Runtime Credential Security</text>
+
+    <text x="20" y="65" fill="#34D399" font-weight="600" font-size="12">Secret Key: GEMINI_API_KEY (Version: latest)</text>
+    <text x="20" y="85" fill="#94A3B8" font-size="12">• Runtime API Key Retrieval via SecretAccessor IAM Role</text>
+    <text x="20" y="103" fill="#94A3B8" font-size="12">• Zero Hardcoded Secrets in Codebase or Client Bundles</text>
+  </g>
+
+</svg>

@@ -78,34 +78,17 @@ This project strictly implements every requirement outlined in the official Goog
 
 ## 🏗️ Architecture & Security Model
 
-```text
-┌────────────────────────────────────────────────────────────────────────┐
-│                          Client Browser                                │
-│  ┌──────────────────────────────────────────────────────────────────┐  │
-│  │   Harmony UI (Next.js 15, Tailwind, Framer Motion, Recharts)     │  │
-│  └─────────────────────────────────┬────────────────────────────────┘  │
-└────────────────────────────────────┼───────────────────────────────────┘
-                                     │ HTTPS
-┌────────────────────────────────────▼───────────────────────────────────┐
-│                        Google Cloud Run Service                        │
-│            (Label: dev-tutorial=cloud-run-ai-challenge)                │
-│  ┌────────────────────────┐              ┌──────────────────────────┐  │
-│  │ Firebase Client/Admin  │              │  Gemini SDK Integration  │  │
-│  └───────────┬────────────┘              └────────────┬─────────────┘  │
-└──────────────┼────────────────────────────────────────┼────────────────┘
-               │                                        │
-┌──────────────▼─────────────┐             ┌────────────▼─────────────┐
-│    Firebase Auth Service   │             │   Google AI Studio /     │
-│    (Google & Email Auth)   │             │   Gemini API             │
-└──────────────┬─────────────┘             └──────────────────────────┘
-               │ UID context
-┌──────────────▼─────────────┐             ┌──────────────────────────┐
-│      Cloud Firestore       │             │   Cloud Secret Manager   │
-│ /users/{uid}/journals/{id} │             │   (GEMINI_API_KEY)       │
-│ Strict Security Rules      │             │   roles/secretmanager.   │
-│                            │             │   secretAccessor         │
-└────────────────────────────┘             └──────────────────────────┘
-```
+![Harmony Architecture & Security Model](public/harmony_architecture.svg)
+
+<details>
+<summary><b>🔍 View Detailed Component Breakdown</b></summary>
+
+* **Client Browser Layer**: Next.js 16 UI with React 19, Tailwind CSS, Framer Motion, and Recharts.
+* **Cloud Run Container Layer**: Containerized Next.js standalone application running with service identity `personal-gemini-journal-sa@ai-barista-track-1.iam.gserviceaccount.com` and labeled `dev-tutorial=cloud-run-ai-challenge`.
+* **Services Layer**: Firebase Authentication handling federated Google Sign-In & Email sessions paired with Google Gemini API for reflection intelligence.
+* **Storage & Secret Layer**: Cloud Firestore enforcing `request.auth.uid == userId` rules and Google Cloud Secret Manager injecting `GEMINI_API_KEY` dynamically at runtime.
+
+</details>
 
 ---
 
